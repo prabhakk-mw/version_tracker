@@ -73,53 +73,107 @@ How to use version-tracker
     
         import version_tracker
         
-        # Get the name of your own package
-        package_name = str(__name__).split(".")[0]
-        
-        # Returns a pre-formatted string for use with any logging information, that can be used to warn users of available updates.
-        logger.info("HIGH SEVERITY LEVEL log:")
-        logger.info(
-            version_tracker.get_update_notification(
-                package_name, version_tracker.HIGH_SEVERITY_LEVEL
+            logger.info("==============")
+            # Get the name of your own package
+            package_name = str(__name__).split(".")[0]
+
+            # Returns a pre-formatted string for use with any logging information, that can be used to warn users of available updates.
+            logger.info("HIGH SEVERITY LEVEL log:")
+            logger.info(
+                    version_tracker.get_update_notification(
+                    package_name, version_tracker.HIGH_SEVERITY_LEVEL
+                    )
             )
-        )
-    
-        logger.info("MEDIUM SEVERITY LEVEL log:")
-        logger.info(
-            version_tracker.get_update_notification(
-                package_name, version_tracker.MEDIUM_SEVERITY_LEVEL
+
+            logger.info("MEDIUM SEVERITY LEVEL log:")
+            logger.info(
+                    version_tracker.get_update_notification(
+                    package_name, version_tracker.MEDIUM_SEVERITY_LEVEL
+                    )
             )
-        )
-    
-        logger.info("LOW SEVERITY LEVEL log:")
-        logger.info(
-            version_tracker.get_update_notification(
-                package_name, version_tracker.LOW_SEVERITY_LEVEL
+
+            logger.info("LOW SEVERITY LEVEL log:")
+            logger.info(
+                    version_tracker.get_update_notification(
+                    package_name, version_tracker.LOW_SEVERITY_LEVEL
+                    )
             )
-        
-        # Low Level API:
-    
-        # Returns version information about the current package.
-        version_info = version_tracker.query(package_name)
-    
-        # version_info is a Dictionary with the following information:
-        #  "latest": latest_version,
-        #  "is_major": str(major_update),
-        #  "is_minor": str(minor_update),
-        #  "is_patch": str(patch_update),
-        #  "commit_messages": commit_msg,
-        
-        # Shows the latest version of your package that is available on PyPI
-        print(version_info['latest'])
-        
-        # Shows whether the updates on PyPI are major in Nature. ie: Update found in the MAJOR portion of the Semantic version.
-        print(version_info['is_major'])
-        
-        # Shows any available commit messages related the updates between installed version and latest version.  
-        print(version_info['commit_messages'])
+
+            # Low Level API:
+            # Returns version information about the current package.
+            version_info = version_tracker.query(package_name)
+
+            # version_info is a Dictionary with the following information:
+            #  "latest": latest_version,
+            #  "is_major": str(major_update),
+            #  "is_minor": str(minor_update),
+            #  "is_patch": str(patch_update),
+            #  "commit_messages": commit_msg,
+
+            # Shows the latest version of your package that is available on PyPI
+            print(version_info["latest"])
+
+            # Shows whether the updates on PyPI are major in Nature. ie: Update found in the MAJOR portion of the Semantic version.
+            print(version_info["is_major"])
+
+            # Shows any available commit messages related the updates between installed version and latest version.
+            print(version_info["commit_messages"])
+            logger.info("==============")
 
 #. Sample output from a package that is using the Above APIs and run on an installation which has version 0.1.0, but PyPI has version 0.10.0 installed
 
+    .. code-block:: bash
+    
+                INFO:MATLABProxyApp:HIGH SEVERITY LEVEL log:
+                severity_level requested: 2
+                Local version found for [matlab_proxy] is: [0.1.0]
+                fetching: https://api.github.com/repos/mathworks/matlab-proxy/releases/tags/v0.10.0
+                INFO:MATLABProxyApp:
+                ====!!!! ATTENTION !!!!====
+                Major Update required for matlab_proxy.
+                Consider updating to v0.10.0.
+                Commit message of v0.10.0: 
+                        Contains multiple bug fixes and critical vulnerability patches.
+                Also introduces the ability to control the time for which matlab-proxy waits before timing out. See MWI_PROCESS_START_TIMEOUT in [Advanced-Usage.md](https://github.com/mathworks/matlab-proxy/blob/main/Advanced-Usage.md).
+                **Full Changelog**: https://github.com/mathworks/matlab-proxy/compare/v0.9.1...v0.10.0
+                ====!!!! ATTENTION !!!!====
+
+                INFO:MATLABProxyApp:MEDIUM SEVERITY LEVEL log:
+                severity_level requested: 1
+                Local version found for [matlab_proxy] is: [0.1.0]
+                fetching: https://api.github.com/repos/mathworks/matlab-proxy/releases/tags/v0.10.0
+                INFO:MATLABProxyApp:
+                ====!!!! ATTENTION !!!!====
+                Major Update required for matlab_proxy.
+                Consider updating to v0.10.0.
+                Commit message of v0.10.0: 
+                        Contains multiple bug fixes and critical vulnerability patches.
+                Also introduces the ability to control the time for which matlab-proxy waits before timing out. See MWI_PROCESS_START_TIMEOUT in [Advanced-Usage.md](https://github.com/mathworks/matlab-proxy/blob/main/Advanced-Usage.md).
+                **Full Changelog**: https://github.com/mathworks/matlab-proxy/compare/v0.9.1...v0.10.0
+                ====!!!! ATTENTION !!!!====
+
+                INFO:MATLABProxyApp:LOW SEVERITY LEVEL log:
+                severity_level requested: 0
+                Local version found for [matlab_proxy] is: [0.1.0]
+                fetching: https://api.github.com/repos/mathworks/matlab-proxy/releases/tags/v0.10.0
+                INFO:MATLABProxyApp:
+                ====!!!! ATTENTION !!!!====
+                Major Update required for matlab_proxy.
+                Consider updating to v0.10.0.
+                Commit message of v0.10.0: 
+                        Contains multiple bug fixes and critical vulnerability patches.
+                Also introduces the ability to control the time for which matlab-proxy waits before timing out. See MWI_PROCESS_START_TIMEOUT in [Advanced-Usage.md](https://github.com/mathworks/matlab-proxy/blob/main/Advanced-Usage.md).
+                **Full Changelog**: https://github.com/mathworks/matlab-proxy/compare/v0.9.1...v0.10.0
+                ====!!!! ATTENTION !!!!====
+
+                Local version found for [matlab_proxy] is: [0.1.0]
+                fetching: https://api.github.com/repos/mathworks/matlab-proxy/releases/tags/v0.10.0
+                0.10.0
+                False
+                Contains multiple bug fixes and critical vulnerability patches.
+                Also introduces the ability to control the time for which matlab-proxy waits before timing out. See MWI_PROCESS_START_TIMEOUT in [Advanced-Usage.md](https://github.com/mathworks/matlab-proxy/blob/main/Advanced-Usage.md).
+                **Full Changelog**: https://github.com/mathworks/matlab-proxy/compare/v0.9.1...v0.10.0
+                INFO:MATLABProxyApp:==============
 * Free software: MIT license
 * Documentation: https://version-tracker.readthedocs.io.
 

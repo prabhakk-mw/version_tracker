@@ -42,6 +42,7 @@ def get_update_notification(pkg_name: str, severity_level: int = 2) -> str:
     message = (
         header
         + f" {update_message} Update required for {pkg_name}.\n Consider updating to v{info['latest']}."
+        + f"\n Commit message of v{info['latest']}: \n\t {info['commit_messages']}"
         + header
     )
 
@@ -63,7 +64,9 @@ def query(pkg_name: str) -> dict[str, str]:
             sorted(versions, key=lambda x: tuple(map(int, x.split("."))))
         )[-1:]
         latest_version = str(latest_version_list[0])
-        commit_msg = get_commit_message("matlab-proxy", latest_version)
+
+        # Query commit message if home_page is available
+        commit_msg = get_commit_message(data, latest_version)
 
         major_update: bool = is_major_update_available(local_version, latest_version)
         minor_update: bool = is_minor_update_available(local_version, latest_version)
@@ -146,17 +149,22 @@ def get_patch_version(version: str):
     return version_list[2]
 
 
-def get_commit_message(repo_name, release_tag):
-    api_url = f"https://api.github.com/repos/mathworks/{repo_name}/releases/tags/v{release_tag}"
-    headers = {"Authorization": "token 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"}
+def get_commit_message(repo_data, release_tag):
     try:
-        response = requests.get(api_url, headers=headers)
-        response.raise_for_status()
-        data = response.json()
-        if "body" in data:
-            return data["body"]
-        else:
-            return "No commit messages found for this release."
+        if repo_data["info"]["home_page"]:
+            repo_link = repo_data["info"]["home_page"]
+            api_url = (
+                repo_link.replace("https://github.com", "https://api.github.com/repos")
+                + f"releases/tags/v{release_tag}"
+            )
+            # print(f"fetching: {api_url}")
+            response = requests.get(api_url)
+            response.raise_for_status()
+            data = response.json()
+            if "body" in data:
+                return data["body"]
+            else:
+                return ""
     except Exception as e:
         print(f"Error while communicating with GH: {e}")
-        return "No commit messages found for this release."
+        return ""
