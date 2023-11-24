@@ -174,6 +174,7 @@ How to use version-tracker
                 Also introduces the ability to control the time for which matlab-proxy waits before timing out. See MWI_PROCESS_START_TIMEOUT in [Advanced-Usage.md](https://github.com/mathworks/matlab-proxy/blob/main/Advanced-Usage.md).
                 **Full Changelog**: https://github.com/mathworks/matlab-proxy/compare/v0.9.1...v0.10.0
                 INFO:MATLABProxyApp:==============
+
 * Free software: MIT license
 * Documentation: https://version-tracker.readthedocs.io.
 
